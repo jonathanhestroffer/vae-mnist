@@ -47,30 +47,29 @@ A very simple VAE was constructed and trained on images of the MNIST dataset. Se
 ```
 VAE(
   (Encoder): Sequential(
-    (0): Conv2d(1, 16, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (0): Conv2d(1, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
     (1): ReLU()
-    (2): Conv2d(16, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (2): Conv2d(32, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
     (3): ReLU()
     (4): Flatten(start_dim=1, end_dim=-1)
   )
-  (FC_mu): Linear(in_features=1568, out_features=10, bias=True)
-  (FC_logvar): Linear(in_features=1568, out_features=10, bias=True)
+  (FC_mu): Linear(in_features=3136, out_features=10, bias=True)
+  (FC_logvar): Linear(in_features=3136, out_features=10, bias=True)
   (Decoder): Sequential(
-    (0): Linear(in_features=10, out_features=1568, bias=True)
-    (1): Unflatten(dim=1, unflattened_size=(32, 7, 7))
+    (0): Linear(in_features=10, out_features=3136, bias=True)
+    (1): Unflatten(dim=1, unflattened_size=(64, 7, 7))
     (2): ReLU()
-    (3): ConvTranspose2d(32, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1))
+    (3): ConvTranspose2d(64, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1))
     (4): ReLU()
-    (5): ConvTranspose2d(32, 16, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1))
+    (5): ConvTranspose2d(64, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1))
     (6): ReLU()
-    (7): ConvTranspose2d(16, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (7): ConvTranspose2d(32, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
     (8): Sigmoid()
   )
 )
 ```
 
 After training, test images were encoded, and for each digit, a representative latent space vector was computed as the mean of its corresponding encoded representations. Linear interpolation was then performed between the latent vectors of digits [9, 4, 2, 6, 1], and the resulting decoded images are shown below. Generating meaningful latent space interpolations highlights the true value of VAEs, as a well-structured latent space enables further exploration and optimization (e.g., novel chemical design). While several other interpolation methods exist, their effectiveness is domain-dependent. That said, one can easily appreciate how the choice of an $n$-dimensional trajectory could significantly impact the semantic continuity between two latent vectors. 
-
 
 <p align="center">
   <img src="./figures/latentspace_interpolation.png" width="100%" />
