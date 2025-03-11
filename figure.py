@@ -38,12 +38,14 @@ if __name__ == "__main__":
         for i, label in enumerate(unq_labels):
             latent_vectors[i,:] = z[labels==label].mean(dim=0).detach()
 
-
+    # Digits to interpolate within 11x11 grid
     digits = [9, 2, 4, 6, 1]
     n_steps = 11
 
+    # Mean latent space vectors of chosen digits
     vectors = latent_vectors[digits,:]
 
+    # Corners + middle
     anchors = [
         (0,0),
         (n_steps-1,0),
@@ -52,6 +54,7 @@ if __name__ == "__main__":
         (n_steps//2,n_steps//2)
     ]
 
+    # Grid to store interpolated vectors
     interp_vectors = torch.zeros((n_steps, n_steps, latent_dim)).to(device)
 
     for vec, (i,j) in zip(vectors, anchors):
